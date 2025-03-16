@@ -168,6 +168,12 @@ const dummyProccess = [
   { step: '04', title: '배포 및 유지보수', desc: '안정적인 서비스 운영과 지속적인 개선' },
 ];
 
+const dummyContactData = [
+  { icon: "phone", title: "전화", info: "02-1234-5678", desc: "평일 09:00 - 18:00" },
+  { icon: "envelope", title: "이메일", info: "support@example.com", desc: "24시간 접수 가능" },
+  { icon: "map-marker-alt", title: "주소", info: "서울특별시 강남구 삼성동 123번지", desc: "본사" }
+];
+
 export {
   dummyPosts,
   dummyCompanyInfo,
@@ -177,5 +183,6 @@ export {
   teamMembers,
   dummyBoardPosts,
   servicesList,
-  dummyProccess
+  dummyProccess,
+  dummyContactData
 };
