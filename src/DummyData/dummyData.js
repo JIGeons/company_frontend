@@ -58,7 +58,22 @@ const dummyCompanyInfo = [
   },
 ];
 
+const dummyCompanyInfo2 = [
+  { title: "혁신", desc: "끊임없는 도전과 혁신으로 미래를 선도합니다" },
+  { title: "신뢰", desc: "고객과의 신뢰를 최우선 가치로 삼습니다" },
+  { title: "성장", desc: "구성원들의 지속적인 성장을 지원합니다" },
+];
+
+const dummyCompanyHistory = [
+  { year: "2023", event: "글로벌 시장 진출" },
+  { year: "2022", event: "시리즈 B 투자 유치" },
+  { year: "2021", event: "주요 기술 특허 획득" },
+  { year: "2020", event: "회사 설립" },
+];
+
 export {
   dummyPosts,
-  dummyCompanyInfo
+  dummyCompanyInfo,
+  dummyCompanyInfo2,
+  dummyCompanyHistory
 };
