@@ -41,6 +41,24 @@ const dummyPosts = [
   },
 ];
 
+const dummyCompanyInfo = [
+  {
+    title: "전화 문의",
+    info: "02-1234-5678",
+    subInfo: "평일 09:00 - 18:00",
+  },
+  {
+    title: "이메일 문의",
+    info: "support@example.com",
+    subInfo: "24시간 접수 가능",
+  },
+  {              title: "위치",
+    info: "서울특별시 강남구",
+    subInfo: "삼성동 123번지",
+  },
+];
+
 export {
   dummyPosts,
+  dummyCompanyInfo
 };
