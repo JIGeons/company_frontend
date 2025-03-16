@@ -134,6 +134,40 @@ const dummyBoardPosts = [
   { _id: 5, number: 5, title: "다섯 번째 게시물", createdAt: "2023-11-05T09:15:00", views: 50 },
 ];
 
+const servicesList = [
+  {
+    id: 1,
+    title: '맞춤형 소프트웨어 개발',
+    description: '고객의 요구사항에 맞는 최적화된 솔루션을 제공합니다.',
+    icon: '💻'
+  },
+  {
+    id: 2,
+    title: '클라우드 서비스',
+    description: '안정적이고 확장 가능한 클라우드 인프라 구축 및 관리',
+    icon: '☁️'
+  },
+  {
+    id: 3,
+    title: '보안 솔루션',
+    description: '최신 보안 기술을 적용한 안전한 시스템 구축',
+    icon: '🔒'
+  },
+  {
+    id: 4,
+    title: '기술 컨설팅',
+    description: '전문가의 분석을 통한 최적의 기술 전략 수립',
+    icon: '📊'
+  }
+];
+
+const dummyProccess = [
+  { step: '01', title: '요구사항 분석', desc: '고객의 니즈와 목표를 정확히 파악' },
+  { step: '02', title: '설계 및 기획', desc: '최적의 솔루션 설계와 개발 계획 수립' },
+  { step: '03', title: '개발 및 테스트', desc: '체계적인 개발과 품질 검증 진행' },
+  { step: '04', title: '배포 및 유지보수', desc: '안정적인 서비스 운영과 지속적인 개선' },
+];
+
 export {
   dummyPosts,
   dummyCompanyInfo,
@@ -141,5 +175,7 @@ export {
   dummyCompanyHistory,
   executives,
   teamMembers,
-  dummyBoardPosts
+  dummyBoardPosts,
+  servicesList,
+  dummyProccess
 };
