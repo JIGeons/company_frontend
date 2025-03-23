@@ -1,15 +1,19 @@
 import './App.css'
+
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 // Components
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
+
 import MainPage from "./Page/MainPage/MainPage.jsx";
 import About from "./Page/About/About.jsx";
 import Leadership from "./Page/Leadership/Leadership.jsx";
 import Board from "./Page/Board/Board.jsx";
 import Services from "./Page/Services/Services.jsx";
 import Contact from "./Page/Contact/Contact.jsx";
+
+import AdminLogin from "./Page/Admin/AdminLogin.jsx";
 
 function Layout() {
   return (
@@ -53,6 +57,10 @@ const router = createBrowserRouter([
         element: <Contact />,
       }
     ]
+  }, {
+    /* 로그인 페이지에서는 navigation bar나 footer가 없기 때문에 새로운 path로 만들어 줌 */
+    path: "/admin",
+    element: <AdminLogin />
   }
 ]);
 
