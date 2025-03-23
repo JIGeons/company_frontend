@@ -1,6 +1,7 @@
 import './App.css'
-
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import {createBrowserRouter, RouterProvider, Outlet, Navigate} from "react-router-dom";
+import axios from "axios";
 
 // Components
 import Navbar from "./Components/Navbar/Navbar.jsx";
@@ -14,6 +15,37 @@ import Services from "./Page/Services/Services.jsx";
 import Contact from "./Page/Contact/Contact.jsx";
 
 import AdminLogin from "./Page/Admin/AdminLogin.jsx";
+
+function AuthRedirectRoute() {
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/verify-token",
+          {},
+          { withCredentials: true }
+          );
+
+        setIsAuthenticated(true);
+      } catch(error) {
+        console.log("토큰 인증 실패: ", error);
+        setIsAuthenticated(false);
+      }
+    }
+
+    verifyToken();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return null;
+  }
+
+  // replace -> 현재 페이지를 새로운 페이지로 대체하여 이전 페이지로 돌아갈 수 없게 한다.
+  // isAuthenticated가 false인 경우 Outlet을 사용하여 로그인 페이지로 다시 이동
+  return isAuthenticated ? <Navigate to="/admin/posts" replace /> : <Outlet />;
+}
 
 function Layout() {
   return (
@@ -60,7 +92,11 @@ const router = createBrowserRouter([
   }, {
     /* 로그인 페이지에서는 navigation bar나 footer가 없기 때문에 새로운 path로 만들어 줌 */
     path: "/admin",
-    element: <AdminLogin />
+    element: <AuthRedirectRoute />,
+    children: [{
+      index: true,
+      element: <AdminLogin />,
+    }]
   }
 ]);
 
