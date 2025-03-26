@@ -1,9 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 // Dummy Data
 import { dummyContactData } from "../../DummyData/dummyData.js";
+import axios from "axios";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    status: 'in progress',
+  });
+
+  // input, textArea의 내용이 바뀔 때 마다 formData 수정
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,  // 기존 데이터 삽입
+      [e.target.name]: e.target.value // 새로운 데이터 수정
+    });
+  }
+
+  // 문의 내용 제출
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // form 제출, 링크 이동 등의 기본 동작을 막아 사용자 정의 동작을 실행시키는 함수
+    try {
+      const response = await axios.post("http://localhost:3000/api/contact", formData);
+
+      if (response.status === 201) {
+        alert("문의가 성공적으로 접수 되었습니다.");
+      }
+
+      // formData 초기화
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: '',
+        status: 'in progress',
+      });
+    } catch (error) {
+      console.log("에러 발생: ", error);
+      alert("문의 접수 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    }
+  }
+
   return (
     <div className='min-h-screen bg-white py-32 px-8'>
       <div className='container mx-auto px-4 max-w-6xl'>
@@ -16,41 +57,53 @@ const Contact = () => {
 
         <div className='grid lg:grid-cols-2 gap-12 items-start'>
           <div>
-            <form className='bg-white rounded-2xl shadow-xl p-8'>
+            <form className='bg-white rounded-2xl shadow-xl p-8' onSubmit={handleSubmit}>
               <div className='space-y-6'>
                 <div>
                   <label className='block text-gray-700 font-medium mb-2'>이름</label>
                   <input
                     type='text'
+                    name='name'
                     className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300'
                     placeholder='홍길동'
                     required={true}
+                    value={formData.name}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <label className='block text-gray-700 font-medium mb-2'>이메일</label>
                   <input
                     type='email'
+                    name='email'
                     className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300'
                     placeholder='example@example.com'
                     required={true}
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <label className='block text-gray-700 font-medium mb-2'>전화번호</label>
                   <input
                     type='tel'
+                    name='phone'
                     className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300'
                     placeholder='010-1234-5678'
                     required={true}
+                    value={formData.phone}
+                    onChange={handleChange}
                   />
                 </div>
                 <div>
                   <label className='block text-gray-700 font-medium mb-2'>문의 내용</label>
                   <textarea
+                    name='message'
                     className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300 h-40'
                     placeholder='문의하실 내용을 자세히 적어주세요.'
                     required={true}
+                    value={formData.message}
+                    onChange={handleChange}
                   />
                 </div>
                 <button className='w-full bg-blue-600 text-white py-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-300'>
