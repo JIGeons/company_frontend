@@ -4,8 +4,9 @@ import {createBrowserRouter, RouterProvider, Outlet, Navigate} from "react-route
 import axios from "axios";
 
 // Components
-import Navbar from "./Components/Navbar/Navbar.jsx";
 import Footer from "./Components/Footer/Footer.jsx";
+import Navbar from "./Components/Navbar/Navbar.jsx";
+import AdminNavbar from "./Components/AdminNavbar.jsx";
 
 import MainPage from "./Page/MainPage/MainPage.jsx";
 import About from "./Page/About/About.jsx";
@@ -15,6 +16,10 @@ import Services from "./Page/Services/Services.jsx";
 import Contact from "./Page/Contact/Contact.jsx";
 
 import AdminLogin from "./Page/Admin/AdminLogin.jsx";
+import AdminPosts from "./Page/Admin/AdminPosts.jsx";
+import AdminCreatePost from "./Page/Admin/AdminCreatePost.jsx";
+import AdminEditPost from "./Page/Admin/AdminEditPost.jsx";
+import AdminContacts from "./Page/Admin/AdminContacts.jsx";
 
 function AuthRedirectRoute() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -53,6 +58,15 @@ function Layout() {
       <Navbar />
       <Outlet />
       <Footer />
+    </>
+  )
+}
+
+function AdminLayout() {
+  return (
+    <>
+      <AdminNavbar />
+      <Outlet />
     </>
   )
 }
@@ -97,6 +111,26 @@ const router = createBrowserRouter([
       index: true,
       element: <AdminLogin />,
     }]
+  },
+  {
+    /* 로그인 페이지에서는 navigation bar나 footer가 없기 때문에 새로운 path로 만들어 줌 */
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "posts",
+        element: <AdminPosts />,
+      }, {
+        path: "create-post",
+        element: <AdminCreatePost />,
+      }, {
+        path: "edit-post/:id",
+        element: <AdminEditPost />,
+      }, {
+        path: "contacts",
+        element: <AdminContacts />,
+      }
+    ]
   }
 ]);
 

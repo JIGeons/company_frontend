@@ -31,12 +31,12 @@ const AdminLogin = () => {
 
             console.log(response);
 
-            if (response.data.data.user) {
+            if (response.data.user) {
                 navigate('/admin/posts');
             }
         } catch (error) {
-            const errorMessage = error.response.data.message || "로그인에 실패했습니다.";
-            const remainingAttempts = error.response.data.remainingAttempts;
+            const errorMessage = error.response?.data.message || "로그인에 실패했습니다.";
+            const remainingAttempts = error.response?.data.remainingAttempts;
 
             setError({
                 message: errorMessage,

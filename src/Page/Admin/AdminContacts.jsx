@@ -1,10 +1,10 @@
 import React from 'react';
 
-const AdminContexts = () => {
+const AdminContacts = () => {
   return (
     <>
     </>
   );
 }
 
-export default AdminContexts;
+export default AdminContacts;
