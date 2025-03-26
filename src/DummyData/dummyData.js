@@ -174,6 +174,33 @@ const dummyContactData = [
   { icon: "map-marker-alt", title: "주소", info: "서울특별시 강남구 삼성동 123번지", desc: "본사" }
 ];
 
+const contacts = ([
+  {
+    id: 1,
+    name: "홍길동",
+    email: "hong@example.com",
+    phone: "010-1234-5678",
+    message: "상품에 대한 문의입니다.",
+    status: "대기중",
+  },
+  {
+    id: 2,
+    name: "이영희",
+    email: "lee@example.com",
+    phone: "010-8765-4321",
+    message: "환불 요청합니다.",
+    status: "진행중",
+  },
+  {
+    id: 3,
+    name: "박철수",
+    email: "park@example.com",
+    phone: "010-0000-1111",
+    message: "연락이 지연되고 있습니다.",
+    status: "완료",
+  },
+]);
+
 export {
   dummyPosts,
   dummyCompanyInfo,
@@ -184,5 +211,6 @@ export {
   dummyBoardPosts,
   servicesList,
   dummyProccess,
-  dummyContactData
+  dummyContactData,
+  contacts
 };
