@@ -52,6 +52,43 @@ function AuthRedirectRoute() {
   return isAuthenticated ? <Navigate to="/admin/posts" replace /> : <Outlet />;
 }
 
+function ProtectedRoute() {
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/verify-token",
+          {},
+          { withCredentials: true }
+        );
+
+        setIsAuthenticated(response.data.isValid);
+        setUser(response.data.user);
+      } catch(error) {
+        console.log("토큰 인증 실패: ", error);
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    }
+
+    verifyToken();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return null;
+  }
+
+  return isAuthenticated ? (
+    <Outlet context={{ user }} />
+  ) : (
+    <Navigate to="/admin" replace />
+  )
+
+}
+
 function Layout() {
   return (
     <>
@@ -115,20 +152,25 @@ const router = createBrowserRouter([
   {
     /* 로그인 페이지에서는 navigation bar나 footer가 없기 때문에 새로운 path로 만들어 줌 */
     path: "/admin",
-    element: <AdminLayout />,
+    element: <ProtectedRoute />,  /* ProtectedRoute를 통해 토큰 검증, 토큰이 유효하다면 layout을 출력 */
     children: [
       {
-        path: "posts",
-        element: <AdminPosts />,
-      }, {
-        path: "create-post",
-        element: <AdminCreatePost />,
-      }, {
-        path: "edit-post/:id",
-        element: <AdminEditPost />,
-      }, {
-        path: "contacts",
-        element: <AdminContacts />,
+        element: <AdminLayout/>,
+        children: [
+          {
+            path: "posts",
+            element: <AdminPosts />,
+          }, {
+            path: "create-post",
+            element: <AdminCreatePost />,
+          }, {
+            path: "edit-post/:id",
+            element: <AdminEditPost />,
+          }, {
+            path: "contacts",
+            element: <AdminContacts />,
+          }
+        ]
       }
     ]
   }
