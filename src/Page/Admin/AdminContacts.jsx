@@ -9,6 +9,7 @@ const AdminContacts = () => {
     <div className='p-4 mx-auth max-w-[1400px]'>
       <h1 className='text-4xl font-bold mt-6 mb-4'>문의 관리</h1>
 
+      {/* 문의 내용 검색 div */}
       <div className='mb-4 flex flex-col md:flex-row justify-between items-center gap-4'>
         <div className='flex w-full md:w-auto gap-2'>
           <select className='border rounded px-3 py-2 text-base'>
@@ -32,6 +33,7 @@ const AdminContacts = () => {
           </select>
         </div>
 
+        {/* 페이지네이션 사이즈 설정 */}
         <div className='flex items-center space-x-2'>
           <label className='text-base font-bold text-gray-600'>페이지당 표시: </label>
           <select className='border rounded px-3 py-2'>
@@ -127,6 +129,7 @@ const AdminContacts = () => {
         ))}
       </div>
 
+      {/* 페이지네이션 */}
       <div className='mt-4 flex justify-center space-x-2 text-lg font-bold'>
         <button className='px-3 py-1.5 border border-gray-200 rounded-md disabled:opacity-50'>이전</button>
         <span className='px-3 py-1'>1 / 1</span>
