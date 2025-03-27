@@ -289,15 +289,17 @@ const AdminContacts = () => {
               <button
                 className='px-3 py-1.5 border border-gray-200 rounded-md disabled:opacity-50'
                 onClick={() => setCurrentPage(p => p - 1)}
-                disabled={ currentPage === 1 }
+                disabled={ currentPage === 1 || totalPages === 0 }
               >
                 이전
               </button>
-              <span className='px-3 py-1'>{currentPage} / {totalPages}</span>
+              <span className='px-3 py-1'>
+                { totalPages > 0 ? `${currentPage} / ${totalPages}` : "0 / 0" }
+              </span>
               <button
                 className='px-3 py-1.5 border border-gray-200 rounded-md disabled:opacity-50'
                 onClick={() => setCurrentPage(p => p + 1)}
-                disabled={ currentPage === totalPages }
+                disabled={ currentPage >= totalPages || totalPages === 0 }
               >
                 다음
               </button>

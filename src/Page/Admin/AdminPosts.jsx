@@ -9,7 +9,7 @@ const AdminPosts = () => {
   const [searchType, setSearchType] = useState('title');
 
   useEffect(() => {
-    const fetchContacts = async () => {
+    const fetchPosts = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/api/post`);
 
@@ -19,7 +19,7 @@ const AdminPosts = () => {
       }
     }
 
-    fetchContacts();
+    fetchPosts();
   }, []);
 
   const getFileNameFromUrl = (url) => {
@@ -36,7 +36,7 @@ const AdminPosts = () => {
     });
   }, [posts, searchTerm, searchType]);
 
-  const totalPages = Math.ceil(filteredPosts.length / pageSize);
+  const totalPages = pageSize > 0 ? Math.ceil(filteredPosts.length / pageSize) : 1;
   const paginatedPosts = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
     return filteredPosts.slice(start, start + pageSize);
@@ -50,7 +50,11 @@ const AdminPosts = () => {
       {/* 문의 내용 검색 div */}
       <div className='mb-4 flex flex-col md:flex-row justify-between items-center gap-4'>
         <div className='flex w-full md:w-auto gap-2'>
-          <select className='border rounded px-3 py-2 text-base' value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+          <select
+            className='border rounded px-3 py-2 text-base'
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+          >
             <option value="title">제목</option>
             <option value="content">글 내용</option>
           </select>
@@ -74,11 +78,11 @@ const AdminPosts = () => {
       </div>
 
       <div className='mb-4 flex justify-between items-center'>
-        <div className='text-lg font-bold text-gray-600'>총 0개의 문의</div>
+        <div className='text-lg font-bold text-gray-600'>총 {paginatedPosts.length}개의 문의</div>
 
         {/* 페이지네이션 사이즈 설정 */}
         <div className='flex items-center space-x-2'>
-          <label className='text-base font-bold text-gray-600'>페이지당 표시: </label>
+          <label className='text-base font-bold text-gray-600'>페이지당 표시:{" "}</label>
           <select
             className='border rounded px-3 py-2'
             value={pageSize}
@@ -96,17 +100,17 @@ const AdminPosts = () => {
 
       {/* PC에서 게시글 보여주는 div - table 형식 */}
       <div className='hidden md:block overflow-x-auto'>
-        <table className='w-full bg-white shadow-md rounded-lg overflow-hidden text-sm lg:text-lg font-bold'>
+        <table className='w-full bg-white shadow-md rounded-lg overflow-hidden text-sm lg:text-base font-bold'>
           <thead className='bg-gray-100'>
           <tr>
-            <th className='px-4 py-3 text-left'>번호</th>
-            <th className='px-4 py-3 text-left'>제목</th>
-            <th className='px-4 py-3 text-left'>내용</th>
-            <th className='px-4 py-3 text-left'>조회수</th>
-            <th className='px-4 py-3 text-center'>파일</th>
-            <th className='px-4 py-3 text-left'>작성일</th>
-            <th className='px-4 py-3 text-left'>수정일</th>
-            <th className='px-4 py-3 text-center'>관리</th>
+            <th className='px-4 py-3 text-left w-[8%]'>번호</th>
+            <th className='px-4 py-3 text-left w-[15%]'>제목</th>
+            <th className='px-4 py-3 text-left w-[30%]'>내용</th>
+            <th className='px-4 py-3 text-left w-[7%]'>조회수</th>
+            <th className='px-4 py-3 text-left w-[10%]'>파일</th>
+            <th className='px-4 py-3 text-left w-[12%]'>작성일</th>
+            <th className='px-4 py-3 text-left w-[12%]'>수정일</th>
+            <th className='px-4 py-3 text-left w-[6%]'>관리</th>
           </tr>
           </thead>
           <tbody>
@@ -123,7 +127,7 @@ const AdminPosts = () => {
                 <td className='px-4 py-3 overflow-hidden overflow-ellipsis whitespace-nowrap'>{post.title}</td>
                 <td className='px-4 py-3 overflow-hidden overflow-ellipsis whitespace-nowrap'>{post.content}</td>
                 <td className='px-4 py-3'>{post.views}</td>
-                <td className='px-4 py-3 text-center'>
+                <td className='px-4 py-3'>
                   { Array.isArray(post.fileUrl) ? (
                     <div className="flex flex-col gap-1">
                       {post.fileUrl.map((url, index) => (
@@ -155,8 +159,12 @@ const AdminPosts = () => {
                 <td className='px-4 py-3'>{new Date(post.updatedAt).toLocaleString()}</td>
                 <td className='px-4 py-3'>
                   <div className='flex justify-center space-x-2'>
-                    <button className='px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600'>수정</button>
-                    <button className='px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600'>삭제</button>
+                    <button className='px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 whitespace-nowrap writing-normal'>
+                      수정
+                    </button>
+                    <button className='px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 whitespace-nowrap writing-normal'>
+                      삭제
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -167,7 +175,7 @@ const AdminPosts = () => {
       </div>
 
       {/* 모바일에서 게시글 보여주는 div - 카드 형식 */}
-      <div className="xl:hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="md:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
         {paginatedPosts.length === 0 ? (
           <div className="col-span-full p-8 text-center text-gray-500 bg-white rounded-lg shadow">
             게시글이 없습니다.
@@ -245,15 +253,17 @@ const AdminPosts = () => {
         <button
           className='px-3 py-1.5 border border-gray-200 rounded-md disabled:opacity-50'
           onClick={() => setCurrentPage(p => p - 1)}
-          disabled={ currentPage === 1 }
+          disabled={ currentPage === 1 || totalPages === 0 }
         >
           이전
         </button>
-        <span className='px-3 py-1'>{currentPage} / {totalPages}</span>
+        <span className='px-3 py-1'>
+          { totalPages > 0 ? `${currentPage} / ${totalPages}` : "0 / 0" }
+        </span>
         <button
           className='px-3 py-1.5 border border-gray-200 rounded-md disabled:opacity-50'
           onClick={() => setCurrentPage(p => p + 1)}
-          disabled={ currentPage === totalPages }
+          disabled={ currentPage >= totalPages || totalPages === 0 }
         >
           다음
         </button>
