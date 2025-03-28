@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
+import AboutLocale from "../../Locale/About.json";
 
 // Dummy Data
 import { dummyCompanyInfo2, dummyCompanyHistory } from "../../DummyData/dummyData.js";
@@ -8,6 +9,24 @@ import { dummyCompanyInfo2, dummyCompanyHistory } from "../../DummyData/dummyDat
 import companyImg from '../../assets/images/Image2.jpg';
 
 const About = () => {
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'ko');
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem('language') || 'ko');
+    };
+
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
+
+  const t = (key) => {
+    const keys = key.split(".");
+    return keys.reduce((obj, k) => obj[k], AboutLocale[language]);
+  };
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i) => ({
@@ -56,22 +75,14 @@ const About = () => {
         custom={1}
       >
         <h2 className="text-4xl font-bold mb-8 text-slate-800 text-center">
-          회사 소개
+          {t("title")}
         </h2>
         <div className="text-lg leading-relaxed text-gray-600 space-y-6">
           <p>
-            ABC Company는 1995년 설립 이래로 전력 변환 장치 및 전력 제어
-            시스템 분야에서 혁신적인 솔루션을 제공해온 선도적인 전기 기업입니다.
-            고효율 변압기, 전력변환장치(PCS), 무정전전원장치(UPS) 등의 핵심
-            제품을 개발 및 생산하며, 신재생 에너지 설비와 스마트 그리드 시스템
-            구축에도 앞장서고 있습니다.
+            {t("description.part1")} {t("description.part2")}
           </p>
           <p>
-            특히 친환경 에너지 솔루션 분야에서 탁월한 기술력을 인정받아,
-            국내외 주요 발전소와 산업시설에 안정적인 전력 공급 시스템을
-            구축하고 있습니다. 끊임없는 R&D 투자와 기술 혁신을 통해 에너지
-            효율화와 전력 품질 향상에 기여하며, 지속 가능한 미래를 위한
-            친환경 에너지 솔루션을 선도하고 있습니다.
+            {t("description.part3")} {t("description.part4")}
           </p>
         </div>
       </motion.div>
@@ -81,7 +92,11 @@ const About = () => {
         variants={fadeInVariants}
         custom={2}
       >
-        { dummyCompanyInfo2.map((value, index) => (
+        { [
+          { key: "innovation" },
+          { key: "trust" },
+          { key: "growth" },
+        ].map((value, index) => (
           <motion.div
             key={index}
             className="bg-white p-10 rounded-xl shadow-lg text-center hover:shadow-2xl transition-all duration-300 border border-gray-100"
@@ -89,9 +104,9 @@ const About = () => {
             custom={index + 3}
           >
             <h3 className="text-2xl font-bold mb-4 text-indigo-600">
-              {value.title}
+              {t(`values.${value.key}.title`)}
             </h3>
-            <p className="text-gray-600 text-lg">{value.desc}</p>
+            <p className="text-gray-600 text-lg">{t(`values.${value.key}.desc`)}</p>
           </motion.div>
         )) }
       </motion.div>
@@ -101,10 +116,9 @@ const About = () => {
         variants={fadeInVariants}
         custom={4}
       >
-        <h2 className="text-4xl font-bold mb-8 text-slate-800">회사 비전</h2>
+        <h2 className="text-4xl font-bold mb-8 text-slate-800">{t("vision.title")}</h2>
         <p className="text-2xl leading-relaxed text-gray-600 font-light">
-          "2030년까지 글로벌 시장을 선도하는 기술 혁신 기업으로 도약하여,
-          <br />더 나은 세상을 만드는데 기여하겠습니다."
+          "{t("vision.content")}"
         </p>
       </motion.div>
 
@@ -114,10 +128,10 @@ const About = () => {
         custom={5}
       >
         <h2 className="text-4xl font-bold mb-12 text-slate-800 text-center">
-          회사 연혁
+          {t("history.title")}
         </h2>
         <div className="space-y-12 max-w-5xl mx-auto">
-          { dummyCompanyHistory.map((item, index) => (
+          { Object.entries(t("history.events")).map(([year, event], index) => (
             <motion.div
               key={index}
               className={`flex items-center gap-8 ${
@@ -129,9 +143,9 @@ const About = () => {
               <div className="w-1/2 text-center">
                 <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 border border-gray-100">
                   <h3 className="text-2xl font-bold mb-3 text-indigo-600">
-                    {item.year}
+                    {year}
                   </h3>
-                  <p className="text-gray-700 text-lg">{item.event}</p>
+                  <p className="text-gray-700 text-lg">{event}</p>
                 </div>
               </div>
               <div className="w-4 h-4 bg-indigo-600 rounded-full"></div>

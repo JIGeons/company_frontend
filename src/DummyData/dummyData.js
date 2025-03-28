@@ -52,7 +52,8 @@ const dummyCompanyInfo = [
     info: "support@example.com",
     subInfo: "24시간 접수 가능",
   },
-  {              title: "위치",
+  {
+    title: "위치",
     info: "서울특별시 강남구",
     subInfo: "삼성동 123번지",
   },

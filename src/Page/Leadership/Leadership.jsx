@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
+import leadershipLocale from "../../Locale/Leadership.json";
 
 // Dummy Data
-import { executives, teamMembers } from "../../DummyData/dummyData.js";
+// import { executives, teamMembers } from "../../DummyData/dummyData.js";
 
 // Images
 import Human from "../../assets/images/Human1.jpg";
 
 const Leadership = () => {
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'ko');
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem('language') || 'ko');
+    };
+
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
+
+  const t = (key) => {
+    const keys = key.split(".");
+    return keys.reduce((obj, k) => obj[k], leadershipLocale[language]);
+  };
+
+  const executives = t("executivesSection.members");
+  const teamMembers = t("teamSection.members");
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i) => ({
@@ -25,10 +47,10 @@ const Leadership = () => {
     >
       <motion.div className="text-center mb-12" variants={fadeInVariants}>
         <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-          임원진 소개
+          {t("pageTitle")}
         </h1>
         <p className="text-xl text-gray-600">
-          혁신과 성장을 이끄는 ABC Company의 리더쉽
+          {t("pageSubtitle")}
         </p>
       </motion.div>
 
@@ -37,21 +59,12 @@ const Leadership = () => {
         variants={fadeInVariants}
       >
         <motion.div className="md:w-2/3" variants={fadeInVariants}>
-          <h2 className="text-3xl font-bold text-gray-800 mb-6">CEO 인사말</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">{t("ceoSection.title")}</h2>
           <div className="text-lg text-gray-600 space-y-6">
-            <p>안녕하십니까, ABC Company 대표이사 김대표입니다.</p>
-            <p>
-              저희 ABC Company는 20년 이상의 전기 산업 경력을 바탕으로,
-              혁신적인 기술과 서비스를 통해 고객 여러분께 최상의 가치를 제공하기
-              위해 노력하고 있습니다.
-            </p>
-            <p>
-              급변하는 글로벌 시장 환경 속에서도 지속적인 연구개발과 품질 혁신을
-              통해 세계 최고 수준의 제품과 서비스를 제공하겠습니다.
-            </p>
-            <p className="font-semibold mt-8">
-              ABC Company 대표이사 김대표 드림
-            </p>
+            <p>{t("ceoSection.greeting")}</p>
+            <p>{t("ceoSection.message1")}</p>
+            <p>{t("ceoSection.message2")}</p>
+            <p className="font-semibold mt-8">{t("ceoSection.signature")}</p>
           </div>
         </motion.div>
         <motion.div
@@ -62,8 +75,8 @@ const Leadership = () => {
           <div className="rounded-xl overflow-hidden shadow-lg">
             <img src={Human} className="w-full aspect-[3/4] object-cover" />
             <div className="p-4 bg-white">
-              <h3 className="text-xl font-bold text-gray-800">김대표</h3>
-              <p className="text-indigo-600">대표이사</p>
+              <h3 className="text-xl font-bold text-gray-800">{t("ceoSection.name")}</h3>
+              <p className="text-indigo-600">{t("ceoSection.position")}</p>
             </div>
           </div>
         </motion.div>
@@ -75,10 +88,10 @@ const Leadership = () => {
         custom={0.4}
       >
         <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
-          경영진
+          {t("executivesSection.title")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          { executives.map((executive, index) => (
+          {executives.map((executive, index) => (
             <motion.div
               key={index}
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
@@ -87,7 +100,7 @@ const Leadership = () => {
             >
               <div className="aspect-square bg-gray-200">
                 <img
-                  src={executive.imageUrl}
+                  src={Human}
                   alt={executive.name}
                   className="w-full h-full object-cover"
                 />
@@ -112,10 +125,10 @@ const Leadership = () => {
         custom={0.6}
       >
         <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
-          핵심 구성원
+          {t("teamSection.title")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          { teamMembers.map((teamMember, index) => (
+          {teamMembers.map((teamMember, index) => (
             <motion.div
               key={index}
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
@@ -124,7 +137,7 @@ const Leadership = () => {
             >
               <div className="aspect-square bg-gray-200">
                 <img
-                  src={teamMember.imageUrl}
+                  src={Human}
                   alt={teamMember.name}
                   className="w-full h-full object-cover"
                 />
@@ -144,6 +157,6 @@ const Leadership = () => {
       </motion.div>
     </motion.div>
   );
-}
+};
 
 export default Leadership;

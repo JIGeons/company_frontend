@@ -1,10 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
+import ServicesLocale from "../../Locale/Services.json";
 
 // Dummy Data
 import { servicesList, dummyProccess } from "../../DummyData/dummyData.js";
 
 const Services = () => {
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'ko');
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem('language') || 'ko');
+    };
+
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
+
+  const t = (key) => {
+    const keys = key.split(".");
+    return keys.reduce((obj, k) => obj[k], ServicesLocale[language]);
+  };
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i) => ({
@@ -22,10 +41,10 @@ const Services = () => {
     >
       <motion.div className="text-center mb-12" variants={fadeInVariants}>
         <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-          우리의 서비스
+          {t("services.mainTitle")}
         </h1>
         <p className="text-xl text-gray-600">
-          혁신적인 기술로 비즈니스의 성공을 지원합니다.
+          {t("services.subTitle")}
         </p>
       </motion.div>
 
@@ -34,7 +53,7 @@ const Services = () => {
         variants={fadeInVariants}
         custom={1}
       >
-        { servicesList.map((service, index) => (
+        { t("services.list").map((service, index) => (
           <motion.div
             key={service.id}
             className="bg-white p-8 rounded-lg shadow-lg hover:-translate-y-2 transition-transform duration-300"
@@ -54,36 +73,36 @@ const Services = () => {
 
       <motion.div className="text-center" variants={fadeInVariants} custom={5}>
         <h2 className="text-3xl font-bold text-gray-800 mb-8">
-          왜 우리를 선택해야 할까요?
+          {t("services.whyUs.title")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="bg-gray-50 p-6 rounded-lg">
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              10년+ 경험
+              {t("services.whyUs.reasons.0.title")}
             </h3>
-            <p className="text-gray-600">다양한 산업 분야의 프로젝트 경험</p>
+            <p className="text-gray-600">{t("services.whyUs.reasons.0.description")}</p>
           </div>
           <div className="bg-gray-50 p-6 rounded-lg">
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              전문가 팀
+              {t("services.whyUs.reasons.1.title")}
             </h3>
-            <p className="text-gray-600">숙련된 개발자와 컨설턴트로 구성</p>
+            <p className="text-gray-600">{t("services.whyUs.reasons.1.description")}</p>
           </div>
           <div className="bg-gray-50 p-6 rounded-lg">
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              24/7 지원
+              {t("services.whyUs.reasons.2.title")}
             </h3>
-            <p className="text-gray-600">연중무휴 기술 지원 서비스</p>
+            <p className="text-gray-600">{t("services.whyUs.reasons.2.description")}</p>
           </div>
         </div>
       </motion.div>
 
       <motion.div className="mt-32" variants={fadeInVariants} custom={6}>
-        <h2 className='text-3xl font-bold text-gray-800 mb-12 text-center'>
-          프로젝트 진행 프로세스
+        <h2 className="text-3xl font-bold text-gray-800 mb-12 text-center">
+          {t("services.process.title")}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          { dummyProccess.map((item, index) => (
+          {t("services.process.steps").map((item, index) => (
             <motion.div
               key={index}
               className="relative p-6 bg-white rounded-xl shadow-md"
@@ -106,13 +125,13 @@ const Services = () => {
         custom={8}
       >
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          프로젝트를 시작할 준비가 되셨나요?
+          {t("services.cta.title")}
         </h2>
         <p className="text-xl mb-8">
-          전문가와 상담하고 최적의 솔루션을 찾아보세요.
+          {t("services.cta.subtitle")}
         </p>
         <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors duration-300">
-          무료 상담 신청하기
+          {t("services.cta.button")}
         </button>
       </motion.div>
     </motion.div>

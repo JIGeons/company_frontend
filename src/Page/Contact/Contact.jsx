@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import axios from "axios";
+import ContactLocale from "../../Locale/Contact.json";
 
 // Dummy Data
 import { dummyContactData } from "../../DummyData/dummyData.js";
@@ -13,6 +14,24 @@ const Contact = () => {
     message: '',
     status: 'in progress',
   });
+
+  const [language, setLanguage] = useState(localStorage.getItem('language') || 'ko');
+
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setLanguage(localStorage.getItem('language') || 'ko');
+    };
+
+    window.addEventListener('languageChange', handleLanguageChange);
+    return () => {
+      window.removeEventListener('languageChange', handleLanguageChange);
+    };
+  }, []);
+
+  const t = (key) => {
+    const keys = key.split(".");
+    return keys.reduce((obj, k) => obj[k], ContactLocale[language]);
+  };
 
   // input, textArea의 내용이 바뀔 때 마다 formData 수정
   const handleChange = (e) => {
@@ -67,9 +86,11 @@ const Contact = () => {
         custom={0}
       >
         <motion.div className="text-center mb-16" variants={fadeInVariants} custom={1}>
-          <h1 className='text-4xl lg:text-5xl font-bold text-gray-800 mb-6'>문의하기</h1>
-          <p className='text-xl text-gray-600 max-w-3xl mx-auto'>
-            태양광 설비 설치부터 유지보수까지, 전문가와 상담하세요. 24시간 내에 답변드리겠습니다.
+          <h1 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-6">
+            {t("contact.title")}
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            {t("contact.subtitle")}
           </p>
         </motion.div>
 
@@ -86,54 +107,62 @@ const Contact = () => {
             <form className='bg-white rounded-2xl shadow-xl p-8' onSubmit={handleSubmit}>
               <div className='space-y-6'>
                 <div>
-                  <label className='block text-gray-700 font-medium mb-2'>이름</label>
+                  <label className='block text-gray-700 font-medium mb-2'>
+                    {t("contact.form.name")}
+                  </label>
                   <input
                     type='text'
                     name='name'
                     className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300'
-                    placeholder='홍길동'
+                    placeholder={t("contact.form.placeholders.name")}
                     required={true}
                     value={formData.name}
                     onChange={handleChange}
                   />
                 </div>
                 <div>
-                  <label className='block text-gray-700 font-medium mb-2'>이메일</label>
+                  <label className='block text-gray-700 font-medium mb-2'>
+                    {t("contact.form.email")}
+                  </label>
                   <input
                     type='email'
                     name='email'
                     className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300'
-                    placeholder='example@example.com'
+                    placeholder={t("contact.form.placeholders.email")}
                     required={true}
                     value={formData.email}
                     onChange={handleChange}
                   />
                 </div>
                 <div>
-                  <label className='block text-gray-700 font-medium mb-2'>전화번호</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {t("contact.form.phone")}
+                  </label>
                   <input
-                    type='tel'
-                    name='phone'
-                    className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300'
-                    placeholder='010-1234-5678'
-                    required={true}
+                    type="tel"
+                    name="phone"
+                    className="w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300"
+                    placeholder={t("contact.form.placeholders.phone")}
+                    required
                     value={formData.phone}
                     onChange={handleChange}
                   />
                 </div>
                 <div>
-                  <label className='block text-gray-700 font-medium mb-2'>문의 내용</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    {t("contact.form.message")}
+                  </label>
                   <textarea
-                    name='message'
-                    className='w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue focus:ring-2 focus:ring-blue-200 transition-colors duration-300 h-40'
-                    placeholder='문의하실 내용을 자세히 적어주세요.'
-                    required={true}
+                    name="message"
+                    className="w-full p-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-colors duration-300 h-40"
+                    placeholder={t("contact.form.placeholders.message")}
+                    required
                     value={formData.message}
                     onChange={handleChange}
                   />
                 </div>
-                <button className='w-full bg-blue-600 text-white py-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-300'>
-                  문의하기
+                <button className="w-full bg-blue-600 text-white py-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-300">
+                  {t("contact.form.submit")}
                 </button>
               </div>
             </form>
@@ -141,14 +170,34 @@ const Contact = () => {
 
           <motion.div className="space-y-8" variants={fadeInVariants} custom={4}>
             <div className='bg-white rounded-2xl shadow-lg p-8'>
-              <h3 className='text-2xl font-bold text-gray-800 mb-6'>연락처 정보</h3>
-              <div className='space-y-6'>
-                { dummyContactData.map((item, index) => (
-                  <div key={index} className='flex items-start'>
-                    <div className='ml-4'>
-                      <h4 className='font-medium text-gray-800'>{item.title}</h4>
-                      <p className='text-gray-600'>{item.info}</p>
-                      <p className='text-sm text-gray-500'>{item.desc}</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                {t("contact.contact_info.title")}
+              </h3>
+              <div className="space-y-6">
+                {[
+                  {
+                    title: t("contact.contact_info.phone.title"),
+                    info: t("contact.contact_info.phone.info"),
+                    desc: t("contact.contact_info.phone.desc"),
+                  },
+                  {
+                    title: t("contact.contact_info.email.title"),
+                    info: t("contact.contact_info.email.info"),
+                    desc: t("contact.contact_info.email.desc"),
+                  },
+                  {
+                    title: t("contact.contact_info.address.title"),
+                    info: t("contact.contact_info.address.info"),
+                    desc: t("contact.contact_info.address.desc"),
+                  },
+                ].map((item, index) => (
+                  <div key={index} className="flex items-start">
+                    <div className="ml-4">
+                      <h4 className="font-medium text-gray-800">
+                        {item.title}
+                      </h4>
+                      <p className="text-gray-600">{item.info}</p>
+                      <p className="text-sm text-gray-500">{item.desc}</p>
                     </div>
                   </div>
                 ))}

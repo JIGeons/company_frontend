@@ -6,7 +6,7 @@ import axios from "axios";
 // Components
 import Footer from "./Components/Footer/Footer.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
-import AdminNavbar from "./Components/AdminNavbar.jsx";
+import AdminNavbar from "./Components/AdminNavbar/AdminNavbar.jsx";
 
 import MainPage from "./Page/MainPage/MainPage.jsx";
 import About from "./Page/About/About.jsx";
