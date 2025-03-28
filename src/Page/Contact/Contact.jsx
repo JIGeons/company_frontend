@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { motion } from "framer-motion";
+import axios from "axios";
 
 // Dummy Data
 import { dummyContactData } from "../../DummyData/dummyData.js";
-import axios from "axios";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -45,18 +46,43 @@ const Contact = () => {
     }
   }
 
+  const fadeInVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, delay: i * 0.2 },
+    }),
+  };
+
   return (
-    <div className='min-h-screen bg-white py-32 px-8'>
-      <div className='container mx-auto px-4 max-w-6xl'>
-        <div className='text-center mb-16'>
+    <motion.div
+      className="min-h-screen bg-white py-32"
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div
+        className="container mx-auto px-4 max-w-6xl"
+        variants={fadeInVariants}
+        custom={0}
+      >
+        <motion.div className="text-center mb-16" variants={fadeInVariants} custom={1}>
           <h1 className='text-4xl lg:text-5xl font-bold text-gray-800 mb-6'>문의하기</h1>
           <p className='text-xl text-gray-600 max-w-3xl mx-auto'>
             태양광 설비 설치부터 유지보수까지, 전문가와 상담하세요. 24시간 내에 답변드리겠습니다.
           </p>
-        </div>
+        </motion.div>
 
-        <div className='grid lg:grid-cols-2 gap-12 items-start'>
-          <div>
+        <motion.div
+          className="grid lg:grid-cols-2 gap-12 items-start"
+          variants={fadeInVariants}
+          custom={2}
+        >
+          <motion.div
+            className="bg-white rounded-2xl shadow-xl p-8"
+            variants={fadeInVariants}
+            custom={3}
+          >
             <form className='bg-white rounded-2xl shadow-xl p-8' onSubmit={handleSubmit}>
               <div className='space-y-6'>
                 <div>
@@ -111,9 +137,9 @@ const Contact = () => {
                 </button>
               </div>
             </form>
-          </div>
+          </motion.div>
 
-          <div className='space-y-8'>
+          <motion.div className="space-y-8" variants={fadeInVariants} custom={4}>
             <div className='bg-white rounded-2xl shadow-lg p-8'>
               <h3 className='text-2xl font-bold text-gray-800 mb-6'>연락처 정보</h3>
               <div className='space-y-6'>
@@ -129,21 +155,25 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className='bg-white rounded-2xl shadow-lg overflow-hidden'>
+            <motion.div
+              className="bg-white rounded-2xl shadow-lg overflow-hidden"
+              variants={fadeInVariants}
+              custom={5}
+            >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50600.001332588865!2d126.91796235000002!3d37.56684034999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2eb421c44ad%3A0xe955a50c118085f8!2z6rSR7ZmU66y46rSR7J6l!5e0!3m2!1sko!2skr!4v1742141386524!5m2!1sko!2skr"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.279301018033!2d126.9754847612344!3d37.572040327749015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca2eb421c44ad%3A0xe955a50c118085f8!2sGwanghwamun%20Square!5e0!3m2!1sen!2skr!4v1735115389923!5m2!1sen!2skr"
                 width="100%"
                 height="400"
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className='w-full h-[400px] md:h[600px] lg:h-[600px]'
+                className="w-full h-[400px] md:h-[600px] lg:h-[600px]"
               ></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }
 
