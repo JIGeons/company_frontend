@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const Board = () => {
   const [posts, setPosts] = useState([]);
@@ -9,6 +10,8 @@ const Board = () => {
   const [searchType, setSearchType] = useState("title");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -166,6 +169,7 @@ const Board = () => {
           paginatedPosts.map((post, index) => (
             <div
               key={post._id}
+              onClick={() => navigate(`/post/${post._id}`)}
               className="border border-gray-200 rounded-lg p-4 bg-white shadow-md hover:shadow-lg transition-shadow"
             >
               <div className="flex justify-between items-center mb-2">

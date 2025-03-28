@@ -12,6 +12,7 @@ import MainPage from "./Page/MainPage/MainPage.jsx";
 import About from "./Page/About/About.jsx";
 import Leadership from "./Page/Leadership/Leadership.jsx";
 import Board from "./Page/Board/Board.jsx";
+import SinglePost from "./Page/SinglePost/SinglePost.jsx";
 import Services from "./Page/Services/Services.jsx";
 import Contact from "./Page/Contact/Contact.jsx";
 
@@ -130,6 +131,10 @@ const router = createBrowserRouter([
       {
         path: "/board",
         element: <Board />,
+      },
+      {
+        path: "/post/:id",
+        element: <SinglePost />
       },
       {
         path: "/our-services",
