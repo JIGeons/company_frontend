@@ -159,10 +159,17 @@ const AdminPosts = () => {
                 <td className='px-4 py-3'>{new Date(post.updatedAt).toLocaleString()}</td>
                 <td className='px-4 py-3'>
                   <div className='flex justify-center space-x-2'>
-                    <button className='px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 whitespace-nowrap writing-normal'>
+                    <button
+                      className='px-3 py-1.5 bg-blue-500 text-white rounded hover:bg-blue-600 whitespace-nowrap writing-normal'
+                      onClick={() =>
+                        (window.location.href = `/admin/edit-post/${post._id}`)
+                      }
+                    >
                       수정
                     </button>
-                    <button className='px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 whitespace-nowrap writing-normal'>
+                    <button
+                      className='px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 whitespace-nowrap writing-normal'
+                    >
                       삭제
                     </button>
                   </div>
