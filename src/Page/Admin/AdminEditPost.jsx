@@ -20,14 +20,21 @@ const AdminEditPost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/post/${id}`, {});
+        const response = await axios.get(`http://localhost:3000/api/post/${id}`, {withCredentials: true});
+
+        const responseResult = response.data;
+
+        if (!responseResult.success) {
+          console.log(responseResult);
+          throw new Error(responseResult.message);
+        }
 
         setFormData({
-          title: response.data.title,
-          content: response.data.content,
+          title: responseResult.data.title,
+          content: responseResult.data.content,
           files: [],
           fileList: [],
-          existingFiles: response.data.fileUrl || [],
+          existingFiles: responseResult.data.fileUrl || [],
         });
       } catch (error) {
         console.error("게시물을 가져오던 중 에러 발생: ", error);
@@ -96,6 +103,12 @@ const AdminEditPost = () => {
               },
             }
           );
+
+          const responseResult = response.data;
+          if (!responseResult.success) {
+            console.log("error message: ", responseResult.message);
+          }
+
           return response.data.fileUrl;
         })
       );
@@ -253,7 +266,11 @@ const AdminEditPost = () => {
                       }
                     );
 
-                    return response.data.imageUrl;
+                    const responseResult = response.data;
+                    if (!responseResult.success) {
+                      throw new Error(responseResult.message);
+                    }
+                    return responseResult.data.imageUrl;
                   } catch (error) {
                     console.error("Image upload failed:", error);
                     throw error;

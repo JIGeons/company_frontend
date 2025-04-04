@@ -20,7 +20,9 @@ const Board = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/post");
-        setPosts(response.data);
+        const responsResult = response.data;
+
+        setPosts(responsResult.data);
       } catch (error) {
         console.error("게시글 가져오기 실패: ", error);
       }

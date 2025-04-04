@@ -42,8 +42,13 @@ const SinglePost = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const postResponse = await axios.get(`http://localhost:3000/api/post/${id}`);
-        setPost(postResponse.data);
+        const postResponse = await axios.get(`http://localhost:3000/api/post/${id}`, {withCredentials: true});
+        const responseResult = postResponse.data;
+        if (!responseResult.success) {
+          throw new Error(responseResult.message);
+        }
+        console.log(responseResult.data);
+        setPost(responseResult.data);
       } catch (error) {
         console.error("게시글 로딩 실패:", error);
       } finally {
