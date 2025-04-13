@@ -71,7 +71,10 @@ const AdminCreatePost = () => {
               },
             }
           );
-          return response.data.fileUrl;
+
+          const result = response.data
+          
+          return result.data.fileUrl;
         })
       );
 
@@ -218,7 +221,9 @@ const AdminCreatePost = () => {
                       }
                     );
 
-                    return response.data.imageUrl;
+                    const result = response.data;
+
+                    return result.data.imageUrl;
                   } catch (error) {
                     console.error("Image upload failed:", error);
                     throw error;
