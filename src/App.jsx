@@ -21,6 +21,7 @@ import AdminPosts from "./Page/Admin/AdminPosts.jsx";
 import AdminCreatePost from "./Page/Admin/AdminCreatePost.jsx";
 import AdminEditPost from "./Page/Admin/AdminEditPost.jsx";
 import AdminContacts from "./Page/Admin/AdminContacts.jsx";
+import axiosInstance from "./Utils/AxiosInstance.js";
 
 function AuthRedirectRoute() {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -28,11 +29,8 @@ function AuthRedirectRoute() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/verify-token",
-          {},
-          { withCredentials: true }
-          );
+        const response = await axiosInstance.post("/api/auth/verify-token", {});
+        console.log("response: ", response);
 
         setIsAuthenticated(true);
       } catch(error) {
@@ -60,11 +58,7 @@ function ProtectedRoute() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/verify-token",
-          {},
-          { withCredentials: true }
-        );
+        const response = await axiosInstance.post("/api/auth/verify-token", {});
 
         setIsAuthenticated(response.data.isValid);
         setUser(response.data.user);

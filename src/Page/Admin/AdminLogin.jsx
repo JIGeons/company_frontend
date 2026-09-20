@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import axiosInstance from "../../Utils/AxiosInstance.js";
 
 const AdminLogin = () => {
     const [formData, setFormData] = useState({
@@ -21,15 +22,10 @@ const AdminLogin = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(
-              'http://localhost:3000/api/auth/login',
-              formData,
-              {
-                  withCredentials: true,    // 크로스 도메인 요청 시, 브라우저가 쿠키를 포함해서 요청하도록 설정
-              }
-            );
+            const response = await axiosInstance.post('/api/auth/login', formData);
 
             console.log(response);
+            localStorage.setItem("accessToken", response.data.accessToken);
 
             if (response.data.user) {
                 navigate('/admin/posts');
@@ -61,17 +57,17 @@ const AdminLogin = () => {
                 <div className='space-y-4'>
                     <div>
                         <label
-                          htmlFor="username"
+                          htmlFor="userId"
                           className='block text-xm font-medium text-gray-700'
                         >
                             관리자 아이디
                         </label>
                         <input
-                          id="username"
-                          name="username"
+                          id="userId"
+                          name="userId"
                           type="text"
                           required
-                          value={formData.username}
+                          value={formData.userId}
                           onChange={handleChange}
                           className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300"
                           placeholder='관리자 아이디'

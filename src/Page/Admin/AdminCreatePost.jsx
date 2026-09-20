@@ -73,7 +73,7 @@ const AdminCreatePost = () => {
           );
 
           const result = response.data
-          
+
           return result.data.fileUrl;
         })
       );
